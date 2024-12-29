@@ -1,0 +1,126 @@
+datasource db {
+    provider = "mongodb"
+    url      = env("DATABASE_URL")
+}
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+model User {
+    id            String    @id @default(auto()) @map("_id") @db.ObjectId
+    name          String?
+    email         String?   @unique
+    emailVerified DateTime?
+    image         String?
+    accounts      Account[]
+    sessions      Session[]
+    projects      Project[]
+    createdAt     DateTime  @default(now())
+    updatedAt     DateTime  @updatedAt
+    plan          Boolean   @default(false)
+    planType      Plan?
+    customerId    String?   @unique
+
+    Subscription Subscription?
+}
+
+enum SubscriptionPeriod {
+    monthly
+    yearly
+}
+
+enum Plan {
+    Basic
+    Professional
+    Business
+}
+
+model Subscription {
+    id        String             @id @default(cuid()) @map("_id")
+    userId    String             @unique @db.ObjectId
+    plan      Plan
+    period    SubscriptionPeriod
+    startDate DateTime           @default(now())
+    endDate   DateTime
+    createdAt DateTime           @default(now())
+    updatedAt DateTime           @updatedAt
+
+    User User @relation(fields: [userId], references: [id])
+}
+
+model Project {
+    id           String   @id @default(auto()) @map("_id") @db.ObjectId
+    name         String
+    userId       String   @db.ObjectId
+    description  String?
+    clicksPerDay Int[]    @default([])
+    createdAt    DateTime @default(now())
+    updatedAt    DateTime @updatedAt
+    links        Link[]
+
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Link {
+    id          String @id @default(auto()) @map("_id") @db.ObjectId
+    projectId   String @db.ObjectId
+    destination String
+    title       String @default("")
+    description String @default("")
+    shortUrl    String @unique
+    clicks      Int    @default(0)
+
+    utmMedium   String? @default("")
+    utmCampaign String? @default("")
+    utmSource   String? @default("")
+    utmTerm     String? @default("")
+    utmContent  String? @default("")
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+model Account {
+    id                String  @id @default(auto()) @map("_id") @db.ObjectId
+    userId            String  @db.ObjectId
+    type              String
+    provider          String
+    providerAccountId String
+    refresh_token     String? @db.String
+    access_token      String? @db.String
+    expires_at        Int?
+    token_type        String?
+    scope             String?
+    id_token          String? @db.String
+    session_state     String?
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@unique([provider, providerAccountId])
+}
+
+model Session {
+    id           String   @id @default(auto()) @map("_id") @db.ObjectId
+    sessionToken String   @unique
+    userId       String   @db.ObjectId
+    expires      DateTime
+    user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model VerificationToken {
+    id         String   @id @default(auto()) @map("_id") @db.ObjectId
+    identifier String
+    token      String
+    expires    DateTime
+
+    @@unique([identifier, token])
+}

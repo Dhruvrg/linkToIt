@@ -1,0 +1,132 @@
+"use client";
+
+import { SafeUser } from "@/types";
+import Avatar from "../Avatar";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { signIn } from "next-auth/react";
+import { BarChart2, LinkIcon, Menu } from "lucide-react";
+import { useState } from "react";
+
+interface NavbarProps {
+  currentUser?: SafeUser | null;
+}
+
+const HomeNavbar: React.FC<NavbarProps> = ({ currentUser }) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  return (
+    <header className="bg-[#9b7bf7] text-white sticky top-0 z-50 md:px-10">
+      <div className="container mx-auto px-4 flex items-center justify-between h-16">
+        <div className="flex items-center space-x-3">
+          <div className="bg-white p-1 rounded-full">
+            <LinkIcon className="h-8 w-8 text-[#9b7bf7]" />
+          </div>
+          <span className="text-2xl font-bold">LinkToIt</span>
+        </div>
+        <div className="hidden md:flex items-center space-x-6">
+          <nav>
+            <ul className="flex items-center space-x-6">
+              <li>
+                <Link
+                  href="/"
+                  className="text-lg font-semibold transition-all duration-500 hover:font-bold hover:text-xl"
+                >
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/pricing"
+                  className="text-lg font-semibold transition-all duration-500 hover:font-bold hover:text-xl"
+                >
+                  Pricing
+                </Link>
+              </li>
+              {currentUser && (
+                <li>
+                  <Link
+                    href={currentUser.plan ? "/dashboard" : "/pricing"}
+                    className="bg-white text-[#9b7bf7] px-4 py-2 rounded-md font-semibold hover:bg-[#9b7bf7] hover:text-white transition-colors shadow-md border border-[#9b7bf7] flex items-center space-x-2"
+                  >
+                    <BarChart2 className="h-4 w-4" />
+                    <span>Dashboard</span>
+                  </Link>
+                </li>
+              )}
+            </ul>
+          </nav>
+          {currentUser ? (
+            <Avatar src={currentUser?.image} />
+          ) : (
+            <Button
+              onClick={() => signIn("google")}
+              variant="outline"
+              className="bg-white text-[#9b7bf7] px-4 py-5 rounded-md font-bold hover:bg-[#9b7bf7] hover:text-white transition-colors shadow-md border border-[#9b7bf7]"
+            >
+              Sign in with Google
+            </Button>
+          )}
+        </div>
+        <div className="md:hidden flex items-center">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            <Menu className="h-6 w-6" />
+            <span className="sr-only">Toggle menu</span>
+          </Button>
+        </div>
+      </div>
+      {isMenuOpen && (
+        <div className="md:hidden py-4">
+          <nav className="flex flex-col items-center">
+            <ul className="space-y-4 text-center">
+              <li>
+                <Link
+                  href="/"
+                  className="block hover:text-gray-200 transition-colors"
+                >
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/pricing"
+                  className="block hover:text-gray-200 transition-colors"
+                >
+                  Pricing
+                </Link>
+              </li>
+              {currentUser && (
+                <li>
+                  <Link
+                    href={currentUser.plan ? "/dashboard" : "/pricing"}
+                    className="bg-white text-[#9b7bf7] px-4 py-2 rounded-md font-semibold hover:bg-[#9b7bf7] hover:text-white transition-colors shadow-md border border-[#9b7bf7] flex items-center space-x-2"
+                  >
+                    <BarChart2 className="h-4 w-4" />
+                    <span>Dashboard</span>
+                  </Link>
+                </li>
+              )}
+            </ul>
+          </nav>
+          <div className="mt-4 text-center">
+            {!currentUser && (
+              <Button
+                onClick={() => signIn("google")}
+                variant="outline"
+                className="bg-white text-[#9b7bf7] px-4 py-5 rounded-md font-semibold hover:bg-[#9b7bf7] hover:text-white transition-colors shadow-md border border-[#9b7bf7]"
+              >
+                Sign in with Google
+              </Button>
+            )}
+          </div>
+        </div>
+      )}
+    </header>
+  );
+};
+
+export default HomeNavbar;
