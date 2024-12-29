@@ -7,7 +7,7 @@ interface IParams {
   projectId?: string;
 }
 
-const page = async ({ params }: { params: IParams }) => {
+const page = async ({ params }: { params: IParams | any }) => {
   const { clicksPerDay, links } = await getAnalytics(params);
   const socialMediaData = processData(links);
 

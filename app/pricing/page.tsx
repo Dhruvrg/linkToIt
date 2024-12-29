@@ -131,7 +131,9 @@ const PricingPage = () => {
                 <CardFooter>
                   <Button
                     onClick={() =>
-                      router.push(isYearly ? plan.yearlyHref : plan.montlyHref)
+                      router.push(
+                        `${isYearly ? plan.yearlyHref : plan.montlyHref}`
+                      )
                     }
                     className={`w-full ${
                       plan.popular

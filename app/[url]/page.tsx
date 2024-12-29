@@ -28,7 +28,7 @@ interface Params {
   url?: string;
 }
 
-const page = ({ params }: { params: Params }) => {
+const page = ({ params }: { params: Params | any }) => {
   const router = useRouter();
 
   useEffect(() => {
