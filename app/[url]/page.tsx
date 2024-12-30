@@ -37,7 +37,7 @@ const page = ({ params }: { params: Params | any }) => {
         const link: Link = await updateLinkCountByUrl(params);
         router.push(link.destination);
       } catch (error) {
-        router.push("http://localhost:3000/");
+        router.push("https://www.linktoit.in/");
       }
     };
     setData();
