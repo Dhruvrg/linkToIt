@@ -16,9 +16,9 @@ export default async function RootLayout({
 
   console.log(currentUser);
 
-  if (currentUser === null) return redirect("/");
-
   if (currentUser?.plan === false) return redirect("/");
+
+  if (currentUser === null) return redirect("/");
 
   const projects = await getProjects();
 
