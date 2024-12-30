@@ -12,6 +12,8 @@ const font = Nunito({
   subsets: ["latin"],
 });
 
+console.log("good");
+
 export default async function RootLayout({
   children,
 }: {
