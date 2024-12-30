@@ -13,7 +13,8 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const currentUser = await getCurrentUser();
-  if (!currentUser || !currentUser.plan) return redirect("/");
+  //if (!currentUser || !currentUser.plan) return redirect("/");
+  if (!currentUser) return redirect("/");
 
   const projects = await getProjects();
 
