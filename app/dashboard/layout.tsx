@@ -13,16 +13,16 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const currentUser = await getCurrentUser();
-  //if (!currentUser || !currentUser.plan) return redirect("/");
-  //if (!currentUser) return redirect("/");
+  console.log(currentUser);
+  if (!currentUser || !currentUser.plan) return redirect("/");
 
-  //const projects = await getProjects();
+  const projects = await getProjects();
 
   return (
     <section>
       <ClientOnly>
         <CreateProjectModal />
-        {/* <Navbar currentUser={currentUser} projects={projects} /> */}
+        <Navbar currentUser={currentUser} projects={projects} />
       </ClientOnly>
       <main className="bg-gray-100">
         <SideBar />
