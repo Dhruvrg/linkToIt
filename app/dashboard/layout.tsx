@@ -14,7 +14,7 @@ export default async function RootLayout({
 }) {
   const currentUser = await getCurrentUser();
 
-  //if (currentUser === null) return redirect("/");
+  if (currentUser === null) return redirect("/");
 
   if (currentUser?.plan === false) return redirect("/");
 
@@ -24,7 +24,7 @@ export default async function RootLayout({
     <section>
       <ClientOnly>
         <CreateProjectModal />
-        {/* <Navbar currentUser={currentUser} projects={projects} /> */}
+        <Navbar currentUser={currentUser} projects={projects} />
       </ClientOnly>
       <main className="bg-gray-100">
         <SideBar />
