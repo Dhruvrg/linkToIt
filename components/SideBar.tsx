@@ -17,16 +17,7 @@ import {
   SidebarMenuButton,
   SidebarProvider,
 } from "@/components/ui/sidebar";
-import {
-  PlusCircle,
-  BarChart2,
-  LinkIcon,
-  Settings,
-  Users,
-  Folder,
-  Tag,
-  Clock,
-} from "lucide-react";
+import { PlusCircle, BarChart2, LinkIcon, Settings } from "lucide-react";
 
 export default function SideBar() {
   const pathname = usePathname();
