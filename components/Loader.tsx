@@ -6,7 +6,7 @@ const Loader = () => {
   useEffect(() => {
     setInterval(() => {
       setDots((prevDots) => (prevDots + 1) % 4);
-    }, 500);
+    }, 100);
   }, []);
 
   return (
