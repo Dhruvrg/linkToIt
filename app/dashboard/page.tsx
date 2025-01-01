@@ -20,7 +20,7 @@ const Page = () => {
       if (!project) {
         createProjectModal.onOpen();
       } else {
-        setTimeout(() => router.push(`/dashboard/${project?.id}`), 1500);
+        router.push(`/dashboard/${project?.id}`);
       }
     };
 
