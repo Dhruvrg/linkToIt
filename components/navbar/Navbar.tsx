@@ -4,6 +4,12 @@ import * as React from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { PlusCircle, ChevronDown, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { SafeUser } from "@/types";
+import useCreateProjectModal from "@/hooks/useCreateProjectModel";
+import { Project } from "@prisma/client";
+import toast from "react-hot-toast";
+import { signOut } from "next-auth/react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,12 +17,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { SafeUser } from "@/types";
-import useCreateProjectModal from "@/hooks/useCreateProjectModel";
-import { Project } from "@prisma/client";
-import toast from "react-hot-toast";
-import { signOut } from "next-auth/react";
 
 interface Props {
   currentUser: SafeUser;
@@ -33,9 +33,11 @@ const Navbar: React.FC<Props> = ({ currentUser, projects }) => {
     setSelectedProject(projects[0]);
   }, [projects]);
 
-  const handleClick = (project: Project) => {
+  const handleClick = (project: Project, path: string) => {
     setSelectedProject(project);
-    router.push(`/dashboard/${project?.id}`);
+    let section = path.split("/")[3];
+    if (section === undefined) section = "";
+    router.push(`/dashboard/${project?.id}/${section}`);
   };
 
   const getCurrentPageName = (path: string) => {
@@ -65,6 +67,7 @@ const Navbar: React.FC<Props> = ({ currentUser, projects }) => {
       callbackUrl: "/",
     });
   };
+
   return (
     <nav className="bg-white border-b border-gray-200 px-6 py-3 fixed md:left-64 left-0 right-0 top-0 z-10 shadow-sm">
       <div className="flex justify-between items-center">
@@ -103,7 +106,7 @@ const Navbar: React.FC<Props> = ({ currentUser, projects }) => {
               {projects.map((project: Project) => (
                 <DropdownMenuItem
                   key={project.id}
-                  onClick={() => handleClick(project)}
+                  onClick={() => handleClick(project, pathname)}
                   className="flex items-center py-2"
                 >
                   <div
