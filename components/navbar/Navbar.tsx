@@ -16,6 +16,7 @@ import { SafeUser } from "@/types";
 import useCreateProjectModal from "@/hooks/useCreateProjectModel";
 import { Project } from "@prisma/client";
 import toast from "react-hot-toast";
+import { signOut } from "next-auth/react";
 
 interface Props {
   currentUser: SafeUser;
@@ -58,6 +59,12 @@ const Navbar: React.FC<Props> = ({ currentUser, projects }) => {
     }
   };
 
+  const handleLogout = async () => {
+    await signOut({
+      redirect: true,
+      callbackUrl: "/",
+    });
+  };
   return (
     <nav className="bg-white border-b border-gray-200 px-6 py-3 fixed md:left-64 left-0 right-0 top-0 z-10 shadow-sm">
       <div className="flex justify-between items-center">
@@ -131,7 +138,10 @@ const Navbar: React.FC<Props> = ({ currentUser, projects }) => {
               <DropdownMenuItem>Profile</DropdownMenuItem>
               <DropdownMenuItem>Account Settings</DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="text-red-600">
+              <DropdownMenuItem
+                onClick={() => handleLogout()}
+                className="text-red-600"
+              >
                 Log out
               </DropdownMenuItem>
             </DropdownMenuContent>

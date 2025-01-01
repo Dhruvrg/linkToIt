@@ -59,8 +59,8 @@ const CreateProjectModal = () => {
     <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none bg-neutral-800/70">
       <div className="relative w-full sm:w-3/4 md:w-2/3 lg:w-2/4 my-6 mx-auto h-full lg:h-auto md:h-auto">
         <div className="translate duration-300 h-full translate-y-0 opacity-100">
-          <Card className="w-full h-full max-w-md mx-auto shadow-lg border-[#9b7bf7]/20">
-            <CardHeader className="bg-gradient-to-r from-[#9b7bf7] to-[#7c5ce9] text-white rounded-t-lg relative">
+          <Card className="w-full h-full max-w-md mx-auto shadow-lg border-[#9b7bf7] sm:rounded-lg rounded-none">
+            <CardHeader className="bg-gradient-to-r from-[#9b7bf7] to-[#7c5ce9] text-white sm:rounded-t-lg rounded-none relative">
               <CardTitle className="text-2xl font-bold flex items-center">
                 <PlusCircle className="mr-2" />
                 Create New Project
