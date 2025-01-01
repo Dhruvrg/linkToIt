@@ -94,7 +94,7 @@ const ProjectSettings: React.FC<Props> = ({ mockProject }) => {
     if (projects.length === 1) {
       router.push("/dashboard");
     } else {
-      router.push(`/dashboard/${projects[0].id}`);
+      router.push(`/dashboard/${projects.slice(-1)[0].id}`);
     }
   };
 
