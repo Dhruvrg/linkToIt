@@ -7,6 +7,7 @@ import Navbar from "@/components/navbar/Navbar";
 import SideBar from "@/components/SideBar";
 import getCurrentUser from "@/lib/actions/getCurrentUser";
 import { getProjects } from "@/lib/actions/project.actions";
+import { useProjectStore } from "@/lib/store";
 import { SafeUser } from "@/types";
 import { Project } from "@prisma/client";
 import { useRouter } from "next/navigation";
@@ -18,8 +19,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const [currentUser, setCurrentUser] = useState<SafeUser>();
-  const [projects, setProjects] = useState<Project[]>();
   const [isLoading, setIsLoading] = useState(true);
+  const setProjects = useProjectStore((state) => state.setProjects);
   const router = useRouter();
 
   useEffect(() => {
@@ -32,8 +33,11 @@ export default function RootLayout({
           return;
         }
 
-        const projects = await getProjects();
         setCurrentUser(user);
+
+        const projects = await getProjects();
+        if (!projects) return;
+
         setProjects(projects);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -57,7 +61,7 @@ export default function RootLayout({
     <section>
       <ClientOnly>
         <CreateProjectModal />
-        <Navbar currentUser={currentUser} projects={projects} />
+        <Navbar currentUser={currentUser} />
       </ClientOnly>
       <main className="bg-gray-100">
         <SideBar />

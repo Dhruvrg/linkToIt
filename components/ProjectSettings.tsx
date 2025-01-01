@@ -36,6 +36,7 @@ import {
 } from "lucide-react";
 import toast from "react-hot-toast";
 import { deleteProject, updateProject } from "@/lib/actions/project.actions";
+import { useProjectStore } from "@/lib/store";
 
 interface Props {
   mockProject: {
@@ -52,6 +53,11 @@ const ProjectSettings: React.FC<Props> = ({ mockProject }) => {
   const router = useRouter();
   const [project, setProject] = useState(mockProject);
   const [isLoading, setIsLoading] = useState(false);
+  const removeProject = useProjectStore((state) => state.removeProject);
+  const projects = useProjectStore((state) => state.projects);
+  const updateProjectDetails = useProjectStore(
+    (state) => state.updateProjectDetails
+  );
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -65,8 +71,8 @@ const ProjectSettings: React.FC<Props> = ({ mockProject }) => {
     try {
       const { projectId, name, description } = project;
       await updateProject(projectId, name, description);
+      updateProjectDetails(projectId, name, description);
       toast.success("Your project settings have been updated successfully.");
-      router.push("/dashboard");
     } catch (error) {
       toast.error("Something went wrong!");
     }
@@ -78,13 +84,18 @@ const ProjectSettings: React.FC<Props> = ({ mockProject }) => {
     try {
       const { projectId } = project;
       await deleteProject(projectId);
+      removeProject(projectId);
       toast.dismiss("Your project has been deleted successfully");
     } catch (error) {
       toast.error("Something went wrong!");
     }
 
     setIsLoading(false);
-    router.push("/dashboard");
+    if (projects.length === 1) {
+      router.push("/dashboard");
+    } else {
+      router.push(`/dashboard/${projects[0].id}`);
+    }
   };
 
   return (
@@ -124,7 +135,7 @@ const ProjectSettings: React.FC<Props> = ({ mockProject }) => {
                   <Input
                     id="name"
                     name="name"
-                    value={project.name}
+                    value={project?.name}
                     onChange={handleInputChange}
                     placeholder="Enter project name"
                     className="border-[#9b7bf7] border-opacity-20 focus:border-[#9b7bf7] focus:ring-[#9b7bf7] transition-all duration-300"
@@ -145,7 +156,7 @@ const ProjectSettings: React.FC<Props> = ({ mockProject }) => {
                   <Textarea
                     id="description"
                     name="description"
-                    value={project.description}
+                    value={project?.description}
                     onChange={handleInputChange}
                     placeholder="Describe your project"
                     rows={4}
@@ -178,17 +189,17 @@ const ProjectSettings: React.FC<Props> = ({ mockProject }) => {
                     {
                       icon: Link,
                       label: "Total Links",
-                      value: project.totalLinks,
+                      value: project?.totalLinks,
                     },
                     {
                       icon: BarChart2,
                       label: "Total Clicks",
-                      value: project.totalClicks,
+                      value: project?.totalClicks,
                     },
                     {
                       icon: Calendar,
                       label: "Created On",
-                      value: project.createdAt,
+                      value: project?.createdAt,
                     },
                   ].map((item, index) => (
                     <motion.div

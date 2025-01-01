@@ -23,10 +23,12 @@ import { CreateProjectValidation } from "@/lib/validation";
 import toast from "react-hot-toast";
 import { createProject } from "@/lib/actions/project.actions";
 import { useRouter } from "next/navigation";
+import { useProjectStore } from "@/lib/store";
 
 const CreateProjectModal = () => {
   const { isOpen, onClose } = useUploadModal();
   const [isLoading, setIsLoading] = useState(false);
+  const addProject = useProjectStore((state) => state.addProject);
   const router = useRouter();
 
   const form = useForm<z.infer<typeof CreateProjectValidation>>({
@@ -42,9 +44,14 @@ const CreateProjectModal = () => {
   const onSubmit = async (values: z.infer<typeof CreateProjectValidation>) => {
     setIsLoading(true);
     try {
-      const project = await createProject(values.name, values.description);
+      const newProject = await createProject(values.name, values.description);
+
+      if (!newProject) return;
+
+      addProject(newProject);
+      form.reset({ name: "", description: "" });
       toast.success("Project Created Successfully!");
-      router.push(`/dashboard/${project?.id}`);
+      router.push(`/dashboard/${newProject?.id}`);
     } catch (error) {
       toast.error("Something went wrong!");
     } finally {

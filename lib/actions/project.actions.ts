@@ -11,7 +11,7 @@ export async function getProjects() {
   try {
     const currentUser = await getCurrentUser();
     if (!currentUser) {
-      return;
+      return null;
     }
     const projects = await prisma.project.findMany({
       where: { userId: currentUser?.id },
@@ -41,7 +41,7 @@ export async function createProject(name: string, description: string) {
   try {
     const currentUser = await getCurrentUser();
     if (!currentUser) {
-      return;
+      return null;
     }
     const project = await prisma.project.create({
       data: {

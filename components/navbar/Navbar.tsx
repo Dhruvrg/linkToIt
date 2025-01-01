@@ -17,20 +17,21 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useProjectStore } from "@/lib/store";
 
 interface Props {
   currentUser: SafeUser;
-  projects: Project[] | any;
 }
 
-const Navbar: React.FC<Props> = ({ currentUser, projects }) => {
+const Navbar: React.FC<Props> = ({ currentUser }) => {
+  const projects = useProjectStore((state) => state.projects);
   const [selectedProject, setSelectedProject] = React.useState(projects[0]);
   const { onOpen } = useCreateProjectModal();
   const pathname = usePathname();
   const router = useRouter();
 
   React.useEffect(() => {
-    setSelectedProject(projects[0]);
+    setSelectedProject(projects.slice(-1)[0]);
   }, [projects]);
 
   const handleClick = (project: Project, path: string) => {
