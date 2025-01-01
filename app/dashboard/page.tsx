@@ -2,6 +2,7 @@
 
 import useCreateProjectModal from "@/hooks/useCreateProjectModel";
 import { getProject } from "@/lib/actions/project.actions";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
@@ -28,51 +29,16 @@ const Page = () => {
   }, []);
 
   return (
-    <div className="fixed inset-0 z-40 flex flex-col items-center justify-center bg-gradient-to-b from-[#9b7bf7] to-background">
-      <div className="w-32 h-32 mb-8 relative">
-        <svg
-          viewBox="0 0 100 100"
-          className="w-full h-full"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <defs>
-            <linearGradient
-              id="linkGradient"
-              x1="0%"
-              y1="0%"
-              x2="100%"
-              y2="100%"
-            >
-              <stop offset="0%" stopColor="#9b7bf7" />
-              <stop offset="100%" stopColor="#7c5ce9" />
-            </linearGradient>
-          </defs>
-          <g transform="rotate(45, 50, 50)">
-            <path
-              d="M35,35 L50,20 65,35 65,50 50,65 35,50 Z"
-              fill="none"
-              stroke="url(#linkGradient)"
-              strokeWidth="6"
-              strokeLinejoin="round"
-              className="animate-dash"
-            />
-            <path
-              d="M35,65 L50,80 65,65 65,50 50,35 35,50 Z"
-              fill="none"
-              stroke="url(#linkGradient)"
-              strokeWidth="6"
-              strokeLinejoin="round"
-              className="animate-dash animation-delay-500"
-            />
-          </g>
-          <circle
-            cx="50"
-            cy="50"
-            r="4"
-            fill="#ffffff"
-            className="animate-pulse"
-          />
-        </svg>
+    <div className="fixed inset-0 z-40 flex flex-col items-center justify-center bg-gradient-to-b from-[#9b7bf7] to-background text-center">
+      <div className="bg-white p-1 rounded-full mb-6 shadow-lg">
+        <Image
+          className="rounded-full"
+          height="120"
+          width="120"
+          alt="Logo"
+          src="/logo.png"
+          priority
+        />
       </div>
       <h1 className="text-3xl font-bold text-[#9b7bf7] mb-4">LinkToIt</h1>
       <p className="text-lg text-muted-foreground mb-8 h-6">
