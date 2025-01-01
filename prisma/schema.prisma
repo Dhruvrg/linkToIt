@@ -20,7 +20,7 @@ model User {
     updatedAt     DateTime  @updatedAt
     plan          Boolean   @default(false)
     planType      Plan?
-    customerId    String?
+    customerId    String?   @unique @default(uuid())
 
     Subscription Subscription?
 }
