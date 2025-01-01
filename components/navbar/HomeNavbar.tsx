@@ -5,8 +5,9 @@ import Avatar from "../Avatar";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { signIn } from "next-auth/react";
-import { BarChart2, LinkIcon, Menu } from "lucide-react";
+import { BarChart2, Menu } from "lucide-react";
 import { useState } from "react";
+import Image from "next/image";
 
 interface NavbarProps {
   currentUser?: SafeUser | null;
@@ -19,8 +20,14 @@ const HomeNavbar: React.FC<NavbarProps> = ({ currentUser }) => {
     <header className="bg-[#9b7bf7] text-white sticky top-0 z-50 md:px-10">
       <div className="container mx-auto px-4 flex items-center justify-between h-16">
         <div className="flex items-center space-x-3">
-          <div className="bg-white p-1 rounded-full">
-            <LinkIcon className="h-8 w-8 text-[#9b7bf7]" />
+          <div className="bg-white p-[1px] rounded-full">
+            <Image
+              className="rounded-full"
+              height="35"
+              width="35"
+              alt="Logo"
+              src={"/logo.png"}
+            />
           </div>
           <span className="text-2xl font-bold">LinkToIt</span>
         </div>
