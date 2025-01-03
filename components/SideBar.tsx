@@ -42,13 +42,10 @@ export default function SideBar() {
                 isActive={pathname === "/overview"}
                 className="w-full hover:bg-[#9b7bf7]/10 transition-colors duration-200"
               >
-                <Link
-                  href="/overview"
-                  className="flex items-center px-4 py-3 rounded-lg"
-                >
+                <div className="flex items-center px-4 py-3 rounded-lg">
                   <BarChart2 className="mr-3 h-5 w-5 text-[#9b7bf7]" />
                   <span className="text-base font-medium">Overview</span>
-                </Link>
+                </div>
               </SidebarMenuButton>
               <SidebarMenuSub>
                 <SidebarMenuSubItem>
@@ -89,13 +86,10 @@ export default function SideBar() {
                 isActive={pathname === "/configuration"}
                 className="w-full hover:bg-[#9b7bf7]/10 transition-colors duration-200"
               >
-                <Link
-                  href="/configuration"
-                  className="flex items-center px-4 py-3 rounded-lg"
-                >
+                <div className="flex items-center px-4 py-3 rounded-lg">
                   <Settings className="mr-3 h-5 w-5 text-[#9b7bf7]" />
                   <span className="text-base font-medium">Configuration</span>
-                </Link>
+                </div>
               </SidebarMenuButton>
               <SidebarMenuSub>
                 <SidebarMenuSubItem>

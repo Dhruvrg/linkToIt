@@ -121,7 +121,7 @@ const LinkTable: React.FC<Props> = ({ initialLinks }) => {
   };
 
   return (
-    <div>
+    <div className="absolute top-12 md:top-14 md:left-64 w-full py-10 md:w-[83vw] bg-gray-100">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
