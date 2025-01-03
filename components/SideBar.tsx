@@ -18,14 +18,16 @@ import {
   SidebarProvider,
 } from "@/components/ui/sidebar";
 import { PlusCircle, BarChart2, LinkIcon, Settings } from "lucide-react";
+import useMenuToggle from "@/hooks/useMenuToggle";
 
 export default function SideBar() {
   const pathname = usePathname();
   const projectId = pathname.split("/")[2];
+  const { isOpen, onClose } = useMenuToggle();
 
   return (
     <SidebarProvider>
-      <Sidebar className="border-r border-[#9b7bf7]/10 bg-gradient-to-b from-white to-[#9b7bf7]/5 w-64">
+      <Sidebar className="border-r hidden md:block border-[#9b7bf7]/10 bg-gradient-to-b from-white to-[#9b7bf7]/5 w-64">
         <SidebarHeader className="p-6">
           <Link href={`/dashboard/${projectId}`}>
             <Button className="w-full bg-[#9b7bf7] hover:bg-[#8a6ae6] text-white shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105 rounded-xl h-12">

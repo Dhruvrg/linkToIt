@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { PlusCircle, ChevronDown, ChevronRight } from "lucide-react";
+import { PlusCircle, ChevronDown, ChevronRight, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { SafeUser } from "@/types";
@@ -18,6 +18,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useProjectStore } from "@/lib/store";
+import useMenuToggle from "@/hooks/useMenuToggle";
 
 interface Props {
   currentUser: SafeUser;
@@ -29,6 +30,7 @@ const Navbar: React.FC<Props> = ({ currentUser }) => {
   const { onOpen } = useCreateProjectModal();
   const pathname = usePathname();
   const router = useRouter();
+  const menuToggle = useMenuToggle();
 
   React.useEffect(() => {
     const id = pathname.split("/")[2];
@@ -74,13 +76,27 @@ const Navbar: React.FC<Props> = ({ currentUser }) => {
   };
 
   return (
-    <nav className="bg-white border-b border-gray-200 px-6 py-3 fixed md:left-64 left-0 right-0 top-0 z-10 shadow-sm">
+    <nav className="bg-white border-b border-gray-200 md:px-6 px-4 py-3 fixed md:left-64 left-0 right-0 top-0 z-10 shadow-sm">
       <div className="flex justify-between items-center">
         <div className="flex items-center">
           <h1 className="text-xl font-semibold text-gray-800 flex items-center">
-            <span className="text-[#9b7bf7]">{selectedProject?.name}</span>
-            <ChevronRight className="h-5 w-5 mx-2 text-gray-400" />
-            <span className="capitalize">{getCurrentPageName(pathname)}</span>
+            <span className="text-[#9b7bf7] hidden md:block">
+              {selectedProject?.name}
+            </span>
+            <ChevronRight className="h-5 w-5 mx-2 text-gray-400 hidden md:block" />
+            <Button
+              onClick={() => menuToggle.onOpen()}
+              variant="ghost"
+              size="icon"
+              className="md:hidden mr-2"
+            >
+              <Menu
+                style={{ height: "30px", width: "30px", color: "#9b7bf7" }}
+              />
+            </Button>
+            <span className="capitalize mt-1 md:mt-0">
+              {getCurrentPageName(pathname)}
+            </span>
           </h1>
         </div>
         <div className="flex items-center space-x-4">
