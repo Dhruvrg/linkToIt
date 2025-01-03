@@ -31,8 +31,12 @@ const Navbar: React.FC<Props> = ({ currentUser }) => {
   const router = useRouter();
 
   React.useEffect(() => {
-    setSelectedProject(projects.slice(-1)[0]);
-  }, [projects]);
+    const id = pathname.split("/")[2];
+    if (id === undefined) return;
+    const project = projects.find((project) => project.id === id);
+    if (project === undefined) return;
+    setSelectedProject(project);
+  }, [pathname, projects]);
 
   const handleClick = (project: Project, path: string) => {
     setSelectedProject(project);

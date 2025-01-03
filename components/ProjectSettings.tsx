@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -81,8 +81,8 @@ const ProjectSettings: React.FC<Props> = ({ mockProject }) => {
 
   const handleDelete = async () => {
     setIsLoading(true);
+    const { projectId } = project;
     try {
-      const { projectId } = project;
       await deleteProject(projectId);
       removeProject(projectId);
       toast.dismiss("Your project has been deleted successfully");
@@ -94,7 +94,12 @@ const ProjectSettings: React.FC<Props> = ({ mockProject }) => {
     if (projects.length === 1) {
       router.push("/dashboard");
     } else {
-      router.push(`/dashboard/${projects.slice(-1)[0].id}`);
+      const index = projects.findIndex((project) => project.id === projectId);
+      if (index === 0) {
+        router.push(`/dashboard/${projects[1].id}`);
+      } else {
+        router.push(`/dashboard/${projects[0].id}`);
+      }
     }
   };
 
