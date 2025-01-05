@@ -164,11 +164,35 @@ const ProjectSettings: React.FC<Props> = ({ mockProject }) => {
                     value={project?.description}
                     onChange={handleInputChange}
                     placeholder="Describe your project"
-                    rows={4}
+                    rows={3}
                     className="border-[#9b7bf7] border-opacity-20 focus:border-[#9b7bf7] focus:ring-[#9b7bf7] transition-all duration-300"
                   />
                 </motion.div>
               </CardContent>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+                className="mb-6 mx-6 md:hidden"
+              >
+                <Button
+                  onClick={handleSave}
+                  disabled={isLoading}
+                  className="w-full bg-[#9b7bf7] hover:bg-[#8a6af0] text-white transition-all duration-300 text-lg px-8 py-3 rounded-md shadow-md"
+                >
+                  {isLoading ? (
+                    <>
+                      <Settings className="mr-2 h-5 w-5 animate-spin" />
+                      Saving Changes...
+                    </>
+                  ) : (
+                    <>
+                      <Save className="mr-2 h-5 w-5" />
+                      Save All Changes
+                    </>
+                  )}
+                </Button>
+              </motion.div>
             </Card>
           </motion.div>
 
@@ -228,7 +252,7 @@ const ProjectSettings: React.FC<Props> = ({ mockProject }) => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.5 }}
-                  className="mt-6"
+                  className="mt-6 hidden md:block"
                 >
                   <Button
                     onClick={handleSave}
@@ -271,9 +295,9 @@ const ProjectSettings: React.FC<Props> = ({ mockProject }) => {
               </CardDescription>
             </CardHeader>
             <CardContent className="p-6">
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-4 sm:space-y-0">
                 <div className="space-y-2">
-                  <h3 className="font-semibold text-gray-700">
+                  <h3 className="font-semibold text-gray-700 text-base sm:text-lg">
                     Delete Project
                   </h3>
                   <p className="text-sm text-gray-600">
@@ -291,9 +315,9 @@ const ProjectSettings: React.FC<Props> = ({ mockProject }) => {
                       Delete Project
                     </Button>
                   </AlertDialogTrigger>
-                  <AlertDialogContent>
+                  <AlertDialogContent className="w-full max-w-xs sm:max-w-sm mx-auto p-4 sm:p-6 bg-white rounded-lg shadow-lg">
                     <AlertDialogHeader>
-                      <AlertDialogTitle className="text-red-500">
+                      <AlertDialogTitle className="text-red-500 md:font-normal font-bold">
                         Are you absolutely sure?
                       </AlertDialogTitle>
                       <AlertDialogDescription>

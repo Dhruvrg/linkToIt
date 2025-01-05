@@ -173,7 +173,7 @@ const CreateShortUrlForm: React.FC<Props> = ({ projectId }) => {
                   )}
                 />
               </div>
-              <div className="bg-white rounded-lg shadow-md p-6">
+              <div className="bg-white hidden md:block rounded-lg shadow-md p-6">
                 <Button
                   type="submit"
                   className="group h-min disabled:opacity-50 disabled:hover:opacity-50 hover:opacity-95 ring-none rounded-lg shadow-lg font-bold py-2 px-4 font-dm focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 bg-violet-500 border-b-violet-700 disabled:border-0 disabled:bg-violet-500 disabled:text-white ring-white border-b-4 hover:border-0 active:border-0 active:bg-violet-800 active:text-gray-300 focus-visible:outline-violet-500 sm:text-base dark:bg-gray-700 dark:border-gray-700 dark:border-b-gray-900 w-full hover:bg-[#8a6ae6] text-white text-lg transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg flex items-center justify-center"
@@ -372,14 +372,13 @@ const CreateShortUrlForm: React.FC<Props> = ({ projectId }) => {
               </div>
             </div>
           </div>
-          <div className="bg-white rounded-lg visible md:hidden shadow-md p-6">
+          <div className="bg-white md:hidden rounded-lg shadow-md p-6">
             <Button
               type="submit"
-              className="w-full bg-[#9b7bf7] hover:bg-[#8a6ae6] text-white py-3 rounded-2xl text-lg font-semibold transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg flex items-center justify-center"
+              className="group h-min disabled:opacity-50 disabled:hover:opacity-50 hover:opacity-95 ring-none rounded-lg shadow-lg font-bold py-2 px-4 font-dm focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 bg-violet-500 border-b-violet-700 disabled:border-0 disabled:bg-violet-500 disabled:text-white ring-white border-b-4 hover:border-0 active:border-0 active:bg-violet-800 active:text-gray-300 focus-visible:outline-violet-500 sm:text-base dark:bg-gray-700 dark:border-gray-700 dark:border-b-gray-900 w-full hover:bg-[#8a6ae6] text-white text-lg transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg flex items-center justify-center"
               disabled={isLoading || shortUrlAvailability === "taken"}
             >
-              <Link className="mr-2 h-5 w-5" />
-              Create Short URL
+              {isLoading ? "Creating..." : "Create Short URL"}
             </Button>
           </div>
         </form>
