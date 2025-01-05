@@ -121,7 +121,7 @@ const LinkTable: React.FC<Props> = ({ initialLinks }) => {
   };
 
   return (
-    <div className="absolute top-12 md:top-14 md:left-64 w-full py-10 md:w-[83vw] bg-gray-100">
+    <div className="absolute top-5 md:top-14 md:left-64 w-full py-10 md:w-[83vw] bg-gray-100">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -169,26 +169,28 @@ const LinkTable: React.FC<Props> = ({ initialLinks }) => {
                       transition={{ duration: 0.3, delay: index * 0.1 }}
                       className="hover:bg-gray-50 transition-colors"
                     >
-                      <TableCell className="font-medium text-[#9b7bf7]">
+                      <TableCell className="font-medium text-[#9b7bf7] truncate overflow-hidden text-ellipsis whitespace-nowrap max-w-[35vw] md:max-w-xs">
                         linktoit.in/{link.shortUrl}
                       </TableCell>
-                      <TableCell className="max-w-xs truncate">
+                      <TableCell className="truncate overflow-hidden text-ellipsis whitespace-nowrap max-w-[35vw] md:max-w-xs">
                         {link.destination}
                       </TableCell>
-                      <TableCell>
+                      <TableCell className="truncate overflow-hidden text-ellipsis whitespace-nowrap max-w-[35vw] md:max-w-xs">
                         {link.createdAt.toISOString().split("T")[0]}
                       </TableCell>
-                      <TableCell>
+                      <TableCell className="truncate overflow-hidden text-ellipsis whitespace-nowrap max-w-[35vw] md:max-w-xs">
                         <span className="inline-flex items-center bg-green-100 text-green-800 rounded-full px-2 py-1 text-xs font-medium">
                           <BarChart2 className="mr-1 h-3 w-3" /> {link.clicks}
                         </span>
                       </TableCell>
-                      <TableCell>
+                      <TableCell className="truncate overflow-hidden text-ellipsis whitespace-nowrap max-w-[35vw] md:max-w-xs">
                         <div className="flex space-x-2">
                           <Button
                             variant="outline"
                             size="icon"
-                            onClick={() => copyToClipboard(link.shortUrl)}
+                            onClick={() =>
+                              copyToClipboard(`linktoit.in/${link.shortUrl}`)
+                            }
                             className="hover:bg-[#9b7bf7] hover:text-white transition-colors"
                           >
                             <Copy className="h-4 w-4" />

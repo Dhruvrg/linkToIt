@@ -17,7 +17,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
-  Link,
   Globe,
   Type,
   FileText,
@@ -44,7 +43,7 @@ interface Props {
 const CreateShortUrlForm: React.FC<Props> = ({ projectId }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [shortUrlAvailability, setShortUrlAvailability] = useState<
-    "available" | "taken" | null
+    "available" | "taken" | "invalid" | null
   >(null);
   const router = useRouter();
 
@@ -63,12 +62,17 @@ const CreateShortUrlForm: React.FC<Props> = ({ projectId }) => {
     },
   });
 
-  const shortUrl = form.watch("shortUrl");
+  const shortUrl = form.watch("shortUrl").toLowerCase();
 
   useEffect(() => {
     const checkAvailability = async () => {
       if (shortUrl && shortUrl.length > 2) {
         try {
+          const regex = /^[a-z]+$/;
+          if (!regex.test(shortUrl)) {
+            setShortUrlAvailability("invalid");
+            return;
+          }
           const isAvailable = await checkShortUrlAvailability(shortUrl);
           setShortUrlAvailability(isAvailable ? "available" : "taken");
         } catch (error) {
@@ -88,6 +92,7 @@ const CreateShortUrlForm: React.FC<Props> = ({ projectId }) => {
   const onSubmit = async (values: z.infer<typeof CreateLinkValidation>) => {
     setIsLoading(true);
     try {
+      values.shortUrl = shortUrl;
       await createLink(values, projectId);
       toast.success("Short URL Created!");
       router.push(`/dashboard/${projectId}/links`);
@@ -177,7 +182,7 @@ const CreateShortUrlForm: React.FC<Props> = ({ projectId }) => {
                 <Button
                   type="submit"
                   className="group h-min disabled:opacity-50 disabled:hover:opacity-50 hover:opacity-95 ring-none rounded-lg shadow-lg font-bold py-2 px-4 font-dm focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 bg-violet-500 border-b-violet-700 disabled:border-0 disabled:bg-violet-500 disabled:text-white ring-white border-b-4 hover:border-0 active:border-0 active:bg-violet-800 active:text-gray-300 focus-visible:outline-violet-500 sm:text-base dark:bg-gray-700 dark:border-gray-700 dark:border-b-gray-900 w-full hover:bg-[#8a6ae6] text-white text-lg transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg flex items-center justify-center"
-                  disabled={isLoading || shortUrlAvailability === "taken"}
+                  disabled={isLoading || shortUrlAvailability !== "available"}
                 >
                   {isLoading ? "Creating..." : "Create Short URL"}
                 </Button>
@@ -314,8 +319,10 @@ const CreateShortUrlForm: React.FC<Props> = ({ projectId }) => {
                             <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                               {shortUrlAvailability === "available" ? (
                                 <Check className="h-5 w-5 text-green-500" />
-                              ) : (
+                              ) : shortUrlAvailability === "taken" ? (
                                 <X className="h-5 w-5 text-red-500" />
+                              ) : (
+                                <X className="h-5 w-5 text-yellow-500" />
                               )}
                             </div>
                           )}
@@ -329,12 +336,16 @@ const CreateShortUrlForm: React.FC<Props> = ({ projectId }) => {
                           className={`text-sm ${
                             shortUrlAvailability === "available"
                               ? "text-green-500"
-                              : "text-red-500"
+                              : shortUrlAvailability === "taken"
+                              ? "text-red-500"
+                              : "text-yellow-500"
                           }`}
                         >
                           {shortUrlAvailability === "available"
                             ? "This short URL is available!"
-                            : "This URL is already in use. Try a different one."}
+                            : shortUrlAvailability === "taken"
+                            ? "This URL is already in use. Try a different one."
+                            : "Short URL can only contain 'a-z'."}
                         </p>
                       )}
                       <FormMessage />
@@ -376,7 +387,7 @@ const CreateShortUrlForm: React.FC<Props> = ({ projectId }) => {
             <Button
               type="submit"
               className="group h-min disabled:opacity-50 disabled:hover:opacity-50 hover:opacity-95 ring-none rounded-lg shadow-lg font-bold py-2 px-4 font-dm focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 bg-violet-500 border-b-violet-700 disabled:border-0 disabled:bg-violet-500 disabled:text-white ring-white border-b-4 hover:border-0 active:border-0 active:bg-violet-800 active:text-gray-300 focus-visible:outline-violet-500 sm:text-base dark:bg-gray-700 dark:border-gray-700 dark:border-b-gray-900 w-full hover:bg-[#8a6ae6] text-white text-lg transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg flex items-center justify-center"
-              disabled={isLoading || shortUrlAvailability === "taken"}
+              disabled={isLoading || shortUrlAvailability !== "available"}
             >
               {isLoading ? "Creating..." : "Create Short URL"}
             </Button>
