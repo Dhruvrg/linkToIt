@@ -18,12 +18,10 @@ import {
   SidebarProvider,
 } from "@/components/ui/sidebar";
 import { PlusCircle, BarChart2, LinkIcon, Settings } from "lucide-react";
-import useMenuToggle from "@/hooks/useMenuToggle";
 
 export default function SideBar() {
   const pathname = usePathname();
   const projectId = pathname.split("/")[2];
-  const { isOpen, onClose } = useMenuToggle();
 
   return (
     <SidebarProvider>
@@ -41,7 +39,6 @@ export default function SideBar() {
             <SidebarMenuItem className="mb-1">
               <SidebarMenuButton
                 asChild
-                isActive={pathname === "/overview"}
                 className="w-full hover:bg-[#9b7bf7]/10 transition-colors duration-200"
               >
                 <div className="flex items-center px-4 py-3 rounded-lg">
@@ -85,7 +82,6 @@ export default function SideBar() {
             <SidebarMenuItem className="mb-1">
               <SidebarMenuButton
                 asChild
-                isActive={pathname === "/configuration"}
                 className="w-full hover:bg-[#9b7bf7]/10 transition-colors duration-200"
               >
                 <div className="flex items-center px-4 py-3 rounded-lg">

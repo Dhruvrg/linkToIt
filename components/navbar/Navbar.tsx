@@ -2,7 +2,15 @@
 
 import * as React from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { PlusCircle, ChevronDown, ChevronRight, Menu } from "lucide-react";
+import {
+  PlusCircle,
+  ChevronDown,
+  ChevronRight,
+  Menu,
+  BarChart2,
+  LinkIcon,
+  Settings,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { SafeUser } from "@/types";
@@ -18,7 +26,16 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useProjectStore } from "@/lib/store";
-import useMenuToggle from "@/hooks/useMenuToggle";
+import Link from "next/link";
+import {
+  Sheet,
+  SheetContent,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { AnimatePresence, motion } from "framer-motion";
+import Image from "next/image";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 interface Props {
   currentUser: SafeUser;
@@ -27,10 +44,52 @@ interface Props {
 const Navbar: React.FC<Props> = ({ currentUser }) => {
   const projects = useProjectStore((state) => state.projects);
   const [selectedProject, setSelectedProject] = React.useState(projects[0]);
+  const [isOpen, setIsOpen] = React.useState(false);
   const { onOpen } = useCreateProjectModal();
   const pathname = usePathname();
   const router = useRouter();
-  const menuToggle = useMenuToggle();
+  const projectId = pathname.split("/")[2];
+
+  const navItems = [
+    { name: "Create", href: `/dashboard/${projectId}`, icon: PlusCircle },
+    {
+      name: "Analytics",
+      href: `/dashboard/${projectId}/analytics`,
+      icon: BarChart2,
+    },
+    { name: "Links", href: `/dashboard/${projectId}/links`, icon: LinkIcon },
+    {
+      name: "Settings",
+      href: `/dashboard/${projectId}/settings`,
+      icon: Settings,
+    },
+  ];
+
+  const NavLinks = () => (
+    <>
+      {navItems.map((item, index) => (
+        <motion.div
+          key={item.name}
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: index * 0.1 }}
+        >
+          <Link
+            href={item.href}
+            className={`flex items-center space-x-4 p-3 rounded-lg transition-all duration-200 ease-in-out ${
+              pathname === item.href
+                ? "bg-[#9b7bf7]/10 text-[#9b7bf7] font-bold"
+                : "text-gray-600 hover:bg-[#9b7bf7]/5 hover:text-[#9b7bf7]"
+            }`}
+            onClick={() => setIsOpen(false)}
+          >
+            <item.icon className="h-6 w-6" />
+            <span className="text-lg font-medium">{item.name}</span>
+          </Link>
+        </motion.div>
+      ))}
+    </>
+  );
 
   React.useEffect(() => {
     const id = pathname.split("/")[2];
@@ -76,103 +135,173 @@ const Navbar: React.FC<Props> = ({ currentUser }) => {
   };
 
   return (
-    <nav className="bg-white border-b border-gray-200 md:px-6 px-4 py-3 fixed md:left-64 left-0 right-0 top-0 z-10 shadow-sm">
-      <div className="flex justify-between items-center">
-        <div className="flex items-center">
-          <h1 className="text-xl font-semibold text-gray-800 flex items-center">
-            <span className="text-[#9b7bf7] hidden md:block">
-              {selectedProject?.name}
-            </span>
-            <ChevronRight className="h-5 w-5 mx-2 text-gray-400 hidden md:block" />
+    <div>
+      <nav className="bg-white border-b border-gray-200 md:px-6 px-4 py-3 fixed md:left-64 left-0 right-0 top-0 z-10 shadow-sm">
+        <div className="flex justify-between items-center">
+          <div className="flex items-center">
+            <h1 className="text-xl font-semibold text-gray-800 flex items-center">
+              <span className="text-[#9b7bf7] hidden md:block">
+                {selectedProject?.name}
+              </span>
+              <ChevronRight className="h-5 w-5 mx-2 text-gray-400 hidden md:block" />
+              <Button
+                onClick={() => setIsOpen(true)}
+                variant="ghost"
+                size="icon"
+                className="md:hidden mr-2"
+              >
+                <Menu
+                  style={{ height: "30px", width: "30px", color: "#9b7bf7" }}
+                />
+              </Button>
+              <span className="capitalize mt-1 md:mt-0">
+                {getCurrentPageName(pathname)}
+              </span>
+            </h1>
+          </div>
+          <div className="flex items-center space-x-4">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="outline"
+                  className="bg-white text-gray-700 border-gray-300 hover:bg-gray-50 transition-colors duration-200"
+                >
+                  <div className="flex items-center">
+                    <div
+                      className="w-3 h-3 rounded-full mr-2"
+                      style={{
+                        backgroundColor: `#${selectedProject?.id?.substring(
+                          18,
+                          24
+                        )}`,
+                      }}
+                    ></div>
+                    <span className="mr-2 font-medium">
+                      {selectedProject?.name}
+                    </span>
+                    <ChevronDown className="h-4 w-4 text-gray-500" />
+                  </div>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                {projects.map((project: Project) => (
+                  <DropdownMenuItem
+                    key={project.id}
+                    onClick={() => handleClick(project, pathname)}
+                    className="flex items-center py-2"
+                  >
+                    <div
+                      className="w-3 h-3 rounded-full mr-2"
+                      style={{
+                        backgroundColor: `#${project.id.substring(18, 24)}`,
+                      }}
+                    ></div>
+                    {project.name}
+                  </DropdownMenuItem>
+                ))}
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onClick={() => handleCreateProject()}
+                  className="text-[#9b7bf7]"
+                >
+                  <PlusCircle className="mr-2 h-4 w-4" />
+                  <span>Add New Project</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  className="relative h-8 w-8 rounded-full"
+                >
+                  <Avatar className="h-8 w-8">
+                    <AvatarImage src={currentUser?.image || ""} alt="@shadcn" />
+                    <AvatarFallback>CN</AvatarFallback>
+                  </Avatar>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuItem>Profile</DropdownMenuItem>
+                <DropdownMenuItem>Account Settings</DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onClick={() => handleLogout()}
+                  className="text-red-600"
+                >
+                  Log out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        </div>
+      </nav>
+      <div className="flex items-center md:hidden">
+        <Sheet open={isOpen} onOpenChange={setIsOpen}>
+          <SheetTrigger asChild>
             <Button
-              onClick={() => menuToggle.onOpen()}
               variant="ghost"
               size="icon"
-              className="md:hidden mr-2"
+              className="inline-flex items-center justify-center p-2 rounded-full text-gray-400 hover:text-[#9b7bf7] hover:bg-[#9b7bf7]/10 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#9b7bf7] transition-all duration-200 ease-in-out"
+              onClick={() => setIsOpen(true)}
             >
-              <Menu
-                style={{ height: "30px", width: "30px", color: "#9b7bf7" }}
-              />
+              <span className="sr-only">Open main menu</span>
+              <Menu className="h-6 w-6" aria-hidden="true" />
             </Button>
-            <span className="capitalize mt-1 md:mt-0">
-              {getCurrentPageName(pathname)}
-            </span>
-          </h1>
-        </div>
-        <div className="flex items-center space-x-4">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="outline"
-                className="bg-white text-gray-700 border-gray-300 hover:bg-gray-50 transition-colors duration-200"
-              >
-                <div className="flex items-center">
-                  <div
-                    className="w-3 h-3 rounded-full mr-2"
-                    style={{
-                      backgroundColor: `#${selectedProject?.id?.substring(
-                        18,
-                        24
-                      )}`,
-                    }}
-                  ></div>
-                  <span className="mr-2 font-medium">
-                    {selectedProject?.name}
-                  </span>
-                  <ChevronDown className="h-4 w-4 text-gray-500" />
-                </div>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
-              {projects.map((project: Project) => (
-                <DropdownMenuItem
-                  key={project.id}
-                  onClick={() => handleClick(project, pathname)}
-                  className="flex items-center py-2"
+          </SheetTrigger>
+          <SheetContent
+            side="left"
+            className="w-[280px] bg-gradient-to-br from-white to-[#9b7bf7]/5 p-0"
+          >
+            <VisuallyHidden>
+              <SheetTitle>Navigation Menu</SheetTitle>
+            </VisuallyHidden>
+            <div className="flex flex-col h-full">
+              <div className="flex items-center justify-between p-4 border-b border-gray-200">
+                <Link
+                  href={`/dashboard/${projectId}`}
+                  className="flex items-center"
+                  onClick={() => setIsOpen(false)}
                 >
-                  <div
-                    className="w-3 h-3 rounded-full mr-2"
-                    style={{
-                      backgroundColor: `#${project.id.substring(18, 24)}`,
-                    }}
-                  ></div>
-                  {project.name}
-                </DropdownMenuItem>
-              ))}
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onClick={() => handleCreateProject()}
-                className="text-[#9b7bf7]"
-              >
-                <PlusCircle className="mr-2 h-4 w-4" />
-                <span>Add New Project</span>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                <Avatar className="h-8 w-8">
-                  <AvatarImage src={currentUser?.image || ""} alt="@shadcn" />
-                  <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
-              <DropdownMenuItem>Profile</DropdownMenuItem>
-              <DropdownMenuItem>Account Settings</DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onClick={() => handleLogout()}
-                className="text-red-600"
-              >
-                Log out
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
+                  <div className="bg-white p-[1px] rounded-full">
+                    <Image
+                      className="rounded-full"
+                      height="35"
+                      width="35"
+                      alt="Logo"
+                      src={"/logo.png"}
+                    />
+                  </div>
+                  <span className="ml-2 text-xl font-bold bg-gradient-to-r from-[#9b7bf7] to-[#7c5ce9] text-transparent bg-clip-text">
+                    LinkToIt
+                  </span>
+                </Link>
+              </div>
+              <div className="flex-grow overflow-y-auto py-6 px-4">
+                <AnimatePresence>
+                  {isOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -20 }}
+                      transition={{ duration: 0.2 }}
+                      className="space-y-2"
+                    >
+                      <NavLinks />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+              <div className="p-4 border-t border-gray-200">
+                <p className="text-sm text-gray-500 text-center">
+                  © 2023 LinkToIt. All rights reserved.
+                </p>
+              </div>
+            </div>
+          </SheetContent>
+        </Sheet>
       </div>
-    </nav>
+    </div>
   );
 };
 
