@@ -46,7 +46,7 @@ export async function updateLinkCountByUrl(params: URLParams) {
     const { url } = await params;
     const link = await prisma.link.update({
       where: { shortUrl: url },
-      data: { clicks: { increment: 1 } },
+      data: { clicks: { increment: 1 }, totalClicks: { increment: 1 } },
     });
     return link;
   } catch (error: any) {

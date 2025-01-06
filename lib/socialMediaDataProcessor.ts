@@ -7,7 +7,7 @@ export function processData(links: Link[]) {
 
   links.forEach((item) => {
     const utmSource = item.utmSource || "other";
-    const { clicks } = item;
+    const { totalClicks } = item;
 
     const mediaItem = socialMediaPlatforms.find(
       (config) => config.match === utmSource.toLowerCase()
@@ -18,17 +18,17 @@ export function processData(links: Link[]) {
         (p: any) => p.match === mediaItem.match
       );
       if (existingPlatform) {
-        existingPlatform.clicks += clicks;
+        existingPlatform.totalClicks += totalClicks;
       } else {
         platformData.push({
           match: mediaItem.match,
           platform: mediaItem.platform,
-          clicks: clicks,
+          clicks: totalClicks,
           color: mediaItem.color,
         });
       }
     } else {
-      otherClicks += clicks;
+      otherClicks += totalClicks;
     }
   });
 

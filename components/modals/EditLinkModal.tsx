@@ -34,7 +34,7 @@ export function EditLinkModal({
   const [shortUrl, setShortUrl] = useState(initialShortUrl);
   const [destinationUrl, setDestinationUrl] = useState(initialDestinationUrl);
   const [shortUrlAvailability, setShortUrlAvailability] = useState<
-    "available" | "taken" | null
+    "available" | "taken" | "invalid" | null
   >(null);
   const [isChecking, setIsChecking] = useState(false);
 
@@ -49,6 +49,11 @@ export function EditLinkModal({
       if (shortUrl && shortUrl.length > 2 && shortUrl !== initialShortUrl) {
         setIsChecking(true);
         try {
+          const regex = /^[a-z]+$/;
+          if (!regex.test(shortUrl)) {
+            setShortUrlAvailability("invalid");
+            return;
+          }
           const isAvailable = await checkShortUrlAvailability(shortUrl);
           setShortUrlAvailability(isAvailable ? "available" : "taken");
         } catch (error) {
@@ -84,19 +89,19 @@ export function EditLinkModal({
           transition={{ duration: 0.3 }}
         >
           <DialogHeader>
-            <DialogTitle className="text-2xl font-bold text-[#9b7bf7] flex items-center">
+            <DialogTitle className="text-2xl font-bold text-[#7c5cfa] dark:text-[#9b7bf7] flex items-center">
               <Pencil className="mr-2 h-6 w-6" />
               Edit Link
             </DialogTitle>
-            <DialogDescription className="text-gray-600 dark:text-gray-300">
+            <DialogDescription className="text-gray-700 dark:text-gray-300 text-base">
               Make changes to your link here. Click save when you're done.
             </DialogDescription>
           </DialogHeader>
-          <div className="space-y-6 py-4">
-            <div className="space-y-2">
+          <div className="md:space-y-6 space-y-4 py-4">
+            <div className="md:space-y-2 space-y-1">
               <Label
                 htmlFor="shortUrl"
-                className="text-sm font-medium text-gray-700 dark:text-gray-300"
+                className="text-sm font-medium text-gray-800 dark:text-gray-200"
               >
                 Short URL
               </Label>
@@ -105,7 +110,7 @@ export function EditLinkModal({
                   id="shortUrl"
                   value={shortUrl}
                   onChange={(e) => setShortUrl(e.target.value)}
-                  className="w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#9b7bf7] focus:border-transparent transition-all duration-200"
+                  className="w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#7c5cfa] dark:focus:ring-[#9b7bf7] focus:border-transparent transition-all duration-200 text-gray-800 dark:text-gray-200"
                 />
                 <AnimatePresence>
                   {isChecking && (
@@ -115,7 +120,7 @@ export function EditLinkModal({
                       exit={{ opacity: 0 }}
                       className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none"
                     >
-                      <Loader2 className="h-5 w-5 text-[#9b7bf7] animate-spin" />
+                      <Loader2 className="h-5 w-5 text-[#7c5cfa] dark:text-[#9b7bf7] animate-spin" />
                     </motion.div>
                   )}
                   {!isChecking && shortUrlAvailability && (
@@ -127,8 +132,10 @@ export function EditLinkModal({
                     >
                       {shortUrlAvailability === "available" ? (
                         <Check className="h-5 w-5 text-green-500" />
-                      ) : (
+                      ) : shortUrlAvailability === "taken" ? (
                         <X className="h-5 w-5 text-red-500" />
+                      ) : (
+                        <X className="h-5 w-5 text-yellow-500" />
                       )}
                     </motion.div>
                   )}
@@ -140,23 +147,27 @@ export function EditLinkModal({
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
-                    className={`text-sm ${
+                    className={`text-sm font-medium ${
                       shortUrlAvailability === "available"
-                        ? "text-green-500"
-                        : "text-red-500"
+                        ? "text-green-600 dark:text-green-400"
+                        : shortUrlAvailability === "taken"
+                        ? "text-red-600 dark:text-red-400"
+                        : "text-yellow-600 dark:text-yellow-400"
                     }`}
                   >
                     {shortUrlAvailability === "available"
                       ? "Available"
-                      : "Already taken"}
+                      : shortUrlAvailability === "taken"
+                      ? "Already taken"
+                      : "Invalid Short URL"}
                   </motion.p>
                 )}
               </AnimatePresence>
             </div>
-            <div className="space-y-2">
+            <div className="md:space-y-2 space-y-1">
               <Label
                 htmlFor="destinationUrl"
-                className="text-sm font-medium text-gray-700 dark:text-gray-300"
+                className="text-sm font-medium text-gray-800 dark:text-gray-200"
               >
                 Destination URL
               </Label>
@@ -164,7 +175,7 @@ export function EditLinkModal({
                 id="destinationUrl"
                 value={destinationUrl}
                 onChange={(e) => setDestinationUrl(e.target.value)}
-                className="w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#9b7bf7] focus:border-transparent transition-all duration-200"
+                className="w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#7c5cfa] dark:focus:ring-[#9b7bf7] focus:border-transparent transition-all duration-200 text-gray-800 dark:text-gray-200"
               />
             </div>
           </div>
@@ -180,8 +191,8 @@ export function EditLinkModal({
             <Button
               type="button"
               onClick={handleSave}
-              className="w-full sm:w-auto bg-[#9b7bf7] text-white hover:bg-[#8a6af0] focus:ring-2 focus:ring-offset-2 focus:ring-[#9b7bf7] transition-colors duration-200"
-              disabled={shortUrlAvailability === "taken" || isChecking}
+              className="w-full mb-2 md:mb-0 sm:w-auto bg-[#7c5cfa] dark:bg-[#9b7bf7] text-white hover:bg-[#6b4bf0] dark:hover:bg-[#8a6af0] focus:ring-2 focus:ring-offset-2 focus:ring-[#7c5cfa] dark:focus:ring-[#9b7bf7] transition-colors duration-200"
+              disabled={isChecking || shortUrlAvailability !== "available"}
             >
               Save changes
             </Button>

@@ -47,12 +47,12 @@ export function DeleteLinkModal({
               and make it unavailable to users.
             </p>
           </div>
-          <DialogFooter className="sm:justify-start space-x-2">
+          <DialogFooter className="md:justify-start md:space-x-2">
             <Button
               type="button"
               variant="outline"
               onClick={onClose}
-              className="border-gray-300 text-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700 transition-colors duration-200"
+              className="border-gray-300 mt-2 md:mt-0 text-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700 transition-colors duration-200"
             >
               Cancel
             </Button>

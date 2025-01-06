@@ -70,6 +70,7 @@ model Link {
     description String @default("")
     shortUrl    String @unique
     clicks      Int    @default(0)
+    totalClicks Int    @default(0)
 
     utmMedium   String? @default("")
     utmCampaign String? @default("")

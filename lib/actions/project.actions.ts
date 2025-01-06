@@ -84,12 +84,9 @@ export async function getSettingsPageData(params: IParams) {
     const links = await prisma.link.findMany({ where: { projectId } });
 
     const totalLinks = links.length;
-    const clicksPerDay = project.clicksPerDay.reduce(
-      (sum, clicks) => sum + clicks,
-      0
-    );
-    const totalLinkClicks = links.reduce(
-      (total, link) => total + link.clicks,
+
+    const totalClicks = links.reduce(
+      (total, link) => total + link.totalClicks,
       0
     );
 
@@ -99,7 +96,7 @@ export async function getSettingsPageData(params: IParams) {
       description: project.description,
       createdAt: project.createdAt.toISOString().split("T")[0],
       totalLinks,
-      totalClicks: totalLinkClicks + clicksPerDay,
+      totalClicks,
     };
   } catch (error: any) {
     throw new Error(`Failed to fetch settings page data: ${error.message}`);
