@@ -10,6 +10,8 @@ import {
   BarChart2,
   LinkIcon,
   Settings,
+  LogOut,
+  User,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -36,6 +38,7 @@ import {
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+import { DropdownMenuLabel } from "@radix-ui/react-dropdown-menu";
 
 interface Props {
   currentUser: SafeUser;
@@ -213,23 +216,43 @@ const Navbar: React.FC<Props> = ({ currentUser }) => {
               <DropdownMenuTrigger asChild>
                 <Button
                   variant="ghost"
-                  className="relative h-8 w-8 rounded-full"
+                  className="relative h-9 w-9 rounded-full ring-offset-background transition-all hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                 >
-                  <Avatar className="h-8 w-8">
-                    <AvatarImage src={currentUser?.image || ""} alt="@shadcn" />
-                    <AvatarFallback>CN</AvatarFallback>
+                  <Avatar className="h-9 w-9">
+                    <AvatarImage
+                      src={currentUser?.image || ""}
+                      alt={currentUser?.name || "User"}
+                    />
+                    <AvatarFallback className="bg-gradient-to-br from-[#9b7bf7] to-[#7c5ce9] text-white">
+                      {currentUser?.name
+                        ? currentUser.name.charAt(0).toUpperCase()
+                        : "U"}
+                    </AvatarFallback>
                   </Avatar>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
-                <DropdownMenuItem>Profile</DropdownMenuItem>
-                <DropdownMenuItem>Account Settings</DropdownMenuItem>
+              <DropdownMenuContent
+                align="end"
+                className="w-48 p-2"
+                sideOffset={5}
+              >
+                <DropdownMenuLabel className="font-normal">
+                  <div className="flex flex-col space-y-1">
+                    <p className="text-sm font-medium leading-none">
+                      {currentUser?.name}
+                    </p>
+                    <p className="text-xs leading-none text-muted-foreground">
+                      {currentUser?.email}
+                    </p>
+                  </div>
+                </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
-                  onClick={() => handleLogout()}
-                  className="text-red-600"
+                  onClick={handleLogout}
+                  className="cursor-pointer text-red-600 focus:bg-red-100 focus:text-red-600"
                 >
-                  Log out
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Log out</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
