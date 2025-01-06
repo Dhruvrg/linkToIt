@@ -124,6 +124,13 @@ export const plans = [
   },
 ];
 
+export const timeframes = [
+  { value: "thisWeek", label: "This Week" },
+  { value: "thisMonth", label: "This Month" },
+  { value: "monthly", label: "Monthly" },
+  { value: "daily", label: "Daily" },
+];
+
 export const socialMediaPlatforms = [
   {
     platform: "Facebook",
