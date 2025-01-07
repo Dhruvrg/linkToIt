@@ -120,11 +120,35 @@ const Navbar: React.FC<Props> = ({ currentUser }) => {
     const length = projects?.length;
 
     if (planType === "Basic" && length >= 1) {
-      toast.error("Upgrade to Professional for more projects.");
+      toast.error("Upgrade to Professional for more projects.", {
+        duration: 3000,
+        style: {
+          background: "#ffe3e3",
+          color: "#e03131",
+          border: "1px solid #ffa8a8",
+        },
+        icon: "⚠️",
+      });
     } else if (planType === "Professional" && length >= 3) {
-      toast.error("Upgrade to Business for more projects.");
+      toast.error("Upgrade to Business for more projects.", {
+        duration: 3000,
+        style: {
+          background: "#ffe3e3",
+          color: "#e03131",
+          border: "1px solid #ffa8a8",
+        },
+        icon: "⚠️",
+      });
     } else if (planType === "Business" && length >= 5) {
-      toast.error("Contact the developer for more projects.");
+      toast.error("Contact the developer for more projects.", {
+        duration: 3000,
+        style: {
+          background: "#ffe3e3",
+          color: "#e03131",
+          border: "1px solid #ffa8a8",
+        },
+        icon: "📞",
+      });
     } else {
       onOpen();
     }

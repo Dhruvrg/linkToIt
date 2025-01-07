@@ -94,10 +94,26 @@ const CreateShortUrlForm: React.FC<Props> = ({ projectId }) => {
     try {
       values.shortUrl = shortUrl;
       await createLink(values, projectId);
-      toast.success("Short URL Created!");
+      toast.success("Short URL Created!", {
+        duration: 4000,
+        style: {
+          background: "#e0fce0",
+          color: "#065f46",
+          border: "1px solid #86efac",
+        },
+        icon: "🔗",
+      });
       router.push(`/dashboard/${projectId}/links`);
     } catch (error) {
-      toast.error("Something went wrong!");
+      toast.error("Failed to create Short URL", {
+        duration: 4000,
+        style: {
+          background: "#fef2f2",
+          color: "#991b1b",
+          border: "1px solid #f87171",
+        },
+        icon: "❌",
+      });
     } finally {
       setIsLoading(false);
     }

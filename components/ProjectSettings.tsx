@@ -72,9 +72,25 @@ const ProjectSettings: React.FC<Props> = ({ mockProject }) => {
       const { projectId, name, description } = project;
       await updateProject(projectId, name, description);
       updateProjectDetails(projectId, name, description);
-      toast.success("Your project settings have been updated successfully.");
+      toast.success("Your project settings have been updated successfully!", {
+        duration: 4000,
+        style: {
+          background: "#d1fae5",
+          color: "#065f46",
+          border: "1px solid #6ee7b7",
+        },
+        icon: "✅",
+      });
     } catch (error) {
-      toast.error("Something went wrong!");
+      toast.error("Failed to update project!", {
+        duration: 4000,
+        style: {
+          background: "#fef2f2",
+          color: "#991b1b",
+          border: "1px solid #f87171",
+        },
+        icon: "❌",
+      });
     }
     setIsLoading(false);
   };
@@ -85,9 +101,25 @@ const ProjectSettings: React.FC<Props> = ({ mockProject }) => {
     try {
       await deleteProject(projectId);
       removeProject(projectId);
-      toast.dismiss("Your project has been deleted successfully");
+      toast.success("Your project has been deleted successfully!", {
+        duration: 4000,
+        style: {
+          background: "#ffe4e6",
+          color: "#9b1c31",
+          border: "1px solid #fda4af",
+        },
+        icon: "🗑️",
+      });
     } catch (error) {
-      toast.error("Something went wrong!");
+      toast.error("Failed to delete project!", {
+        duration: 4000,
+        style: {
+          background: "#fef2f2",
+          color: "#991b1b",
+          border: "1px solid #f87171",
+        },
+        icon: "❌",
+      });
     }
 
     setIsLoading(false);

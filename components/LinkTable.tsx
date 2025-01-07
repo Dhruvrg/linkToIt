@@ -58,7 +58,15 @@ const LinkTable: React.FC<Props> = ({ initialLinks }) => {
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
-    toast.success(`${text} has been copied!`);
+    toast.success(`${text} has been copied!`, {
+      duration: 3000,
+      style: {
+        background: "#e6fcf5",
+        color: "#0ca678",
+        border: "1px solid #63e6be",
+      },
+      icon: "📋",
+    });
   };
 
   const openDeleteModal = (id: string) => {
@@ -80,9 +88,25 @@ const LinkTable: React.FC<Props> = ({ initialLinks }) => {
       setLinks((prevLinks) =>
         prevLinks.filter((link) => link.id !== linkToDelete)
       );
-      toast.success("The link has been successfully deleted");
+      toast.success("The link has been successfully deleted!", {
+        duration: 4000,
+        style: {
+          background: "#e6fcf5",
+          color: "#0ca678",
+          border: "1px solid #63e6be",
+        },
+        icon: "🔗",
+      });
     } catch (error) {
-      toast.error("Something went wrong!");
+      toast.error("Failed to delete the link", {
+        duration: 4000,
+        style: {
+          background: "#fef2f2",
+          color: "#991b1b",
+          border: "1px solid #f87171",
+        },
+        icon: "❌",
+      });
     }
 
     closeDeleteModal();
@@ -112,9 +136,25 @@ const LinkTable: React.FC<Props> = ({ initialLinks }) => {
             : link
         )
       );
-      toast.success("The link has been successfully updated");
+      toast.success("The link has been successfully edited!", {
+        duration: 4000,
+        style: {
+          background: "#e6fcf5",
+          color: "#0ca678",
+          border: "1px solid #63e6be",
+        },
+        icon: "✏️",
+      });
     } catch (error) {
-      toast.error("Something went wrong!");
+      toast.error("Failed to edit the link", {
+        duration: 4000,
+        style: {
+          background: "#fef2f2",
+          color: "#991b1b",
+          border: "1px solid #f87171",
+        },
+        icon: "❌",
+      });
     }
 
     closeEditModal();

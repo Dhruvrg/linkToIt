@@ -50,10 +50,26 @@ const CreateProjectModal = () => {
 
       addProject(newProject);
       form.reset({ name: "", description: "" });
-      toast.success("Project Created Successfully!");
+      toast.success("Project Created Successfully!", {
+        duration: 4000,
+        style: {
+          background: "#f0fdf4",
+          color: "#15803d",
+          border: "1px solid #86efac",
+        },
+        icon: "🎉",
+      });
       router.push(`/dashboard/${newProject?.id}`);
     } catch (error) {
-      toast.error("Something went wrong!");
+      toast.error("Failed to create project!", {
+        duration: 4000,
+        style: {
+          background: "#fef2f2",
+          color: "#991b1b",
+          border: "1px solid #f87171",
+        },
+        icon: "❌",
+      });
     } finally {
       setIsLoading(false);
     }

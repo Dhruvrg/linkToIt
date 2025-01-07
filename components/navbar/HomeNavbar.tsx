@@ -8,6 +8,7 @@ import { signIn } from "next-auth/react";
 import { BarChart2, Menu } from "lucide-react";
 import { useState } from "react";
 import Image from "next/image";
+import toast from "react-hot-toast";
 
 interface NavbarProps {
   currentUser?: SafeUser | null;
@@ -43,12 +44,31 @@ const HomeNavbar: React.FC<NavbarProps> = ({ currentUser }) => {
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/pricing"
-                  className="text-lg font-semibold transition-all duration-500 hover:font-bold hover:text-xl"
-                >
-                  Pricing
-                </Link>
+                {currentUser ? (
+                  <Link
+                    href="/pricing"
+                    className="text-lg font-semibold transition-all duration-500 hover:font-bold hover:text-xl"
+                  >
+                    Pricing
+                  </Link>
+                ) : (
+                  <div
+                    onClick={() =>
+                      toast.error("You need to sign in first!", {
+                        duration: 4000,
+                        style: {
+                          background: "#fef2f2",
+                          color: "#991b1b",
+                          border: "1px solid #f87171",
+                        },
+                        icon: "🔒",
+                      })
+                    }
+                    className="text-lg font-semibold transition-all duration-500 hover:font-bold hover:text-xl"
+                  >
+                    Pricing
+                  </div>
+                )}
               </li>
               {currentUser && (
                 <li>
