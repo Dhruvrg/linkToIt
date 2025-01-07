@@ -27,6 +27,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { deleteLink, updateLink } from "@/lib/actions/link.actions";
+import LinkDetailsDialog from "./modals/LinkDetailsDialog";
 
 interface Props {
   initialLinks: Link[];
@@ -155,7 +156,7 @@ const LinkTable: React.FC<Props> = ({ initialLinks }) => {
                     <TableHead className="font-bold text-[#9b7bf7]">
                       Clicks
                     </TableHead>
-                    <TableHead className="font-bold text-[#9b7bf7]">
+                    <TableHead className="font-bold text-[#9b7bf7] text-center">
                       Actions
                     </TableHead>
                   </TableRow>
@@ -184,35 +185,34 @@ const LinkTable: React.FC<Props> = ({ initialLinks }) => {
                           {link.totalClicks}
                         </span>
                       </TableCell>
-                      <TableCell className="truncate overflow-hidden text-ellipsis whitespace-nowrap max-w-[35vw] md:max-w-xs">
-                        <div className="flex space-x-2">
-                          <Button
-                            variant="outline"
-                            size="icon"
-                            onClick={() =>
-                              copyToClipboard(`linktoit.in/${link.shortUrl}`)
-                            }
-                            className="hover:bg-[#9b7bf7] hover:text-white transition-colors"
-                          >
-                            <Copy className="h-4 w-4" />
-                          </Button>
-                          <Button
-                            variant="outline"
-                            size="icon"
-                            onClick={() => openEditModal(link)}
-                            className="hover:bg-[#9b7bf7] hover:text-white transition-colors duration-200"
-                          >
-                            <Pencil className="h-4 w-4" />
-                          </Button>
-                          <Button
-                            variant="outline"
-                            size="icon"
-                            onClick={() => openDeleteModal(link.id)}
-                            className="hover:bg-red-500 hover:text-white transition-colors"
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </div>
+                      <TableCell className="flex justify-center space-x-2">
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          onClick={() =>
+                            copyToClipboard(`linktoit.in/${link.shortUrl}`)
+                          }
+                          className="hover:bg-[#9b7bf7] hover:text-white transition-colors"
+                        >
+                          <Copy className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          onClick={() => openEditModal(link)}
+                          className="hover:bg-[#9b7bf7] hover:text-white transition-colors duration-200"
+                        >
+                          <Pencil className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          onClick={() => openDeleteModal(link.id)}
+                          className="hover:bg-red-500 hover:text-white transition-colors"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                        <LinkDetailsDialog link={link} />
                       </TableCell>
                     </motion.tr>
                   ))}
