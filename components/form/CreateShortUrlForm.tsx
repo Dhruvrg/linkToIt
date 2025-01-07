@@ -221,7 +221,7 @@ const CreateShortUrlForm: React.FC<Props> = ({ projectId }) => {
                     </FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="e.g., facebook, newsletter"
+                        placeholder="e.g., facebook, instagram"
                         {...field}
                         className="bg-gray-200 rounded-2xl border-2 border-[#9b7bf7]/20 focus:border-[#9b7bf7] transition-colors text-gray-800"
                       />
@@ -241,7 +241,7 @@ const CreateShortUrlForm: React.FC<Props> = ({ projectId }) => {
                     </FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="e.g., email, social"
+                        placeholder="e.g., email, ads"
                         {...field}
                         className="bg-gray-200 rounded-2xl border-2 border-[#9b7bf7]/20 focus:border-[#9b7bf7] transition-colors text-gray-800"
                       />
@@ -261,7 +261,7 @@ const CreateShortUrlForm: React.FC<Props> = ({ projectId }) => {
                     </FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="e.g., summer_sale"
+                        placeholder="e.g., summer_sale, product_launch"
                         {...field}
                         className="bg-gray-200 rounded-2xl border-2 border-[#9b7bf7]/20 focus:border-[#9b7bf7] transition-colors text-gray-800"
                       />
@@ -281,7 +281,7 @@ const CreateShortUrlForm: React.FC<Props> = ({ projectId }) => {
                     </FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="e.g., running+shoes"
+                        placeholder="e.g., running+shoes, fitness+gear"
                         {...field}
                         className="bg-gray-200 rounded-2xl border-2 border-[#9b7bf7]/20 focus:border-[#9b7bf7] transition-colors text-gray-800"
                       />
@@ -301,7 +301,7 @@ const CreateShortUrlForm: React.FC<Props> = ({ projectId }) => {
                     </FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="e.g., logolink"
+                        placeholder="e.g., logolink, textlink"
                         {...field}
                         className="bg-gray-200 rounded-2xl border-2 border-[#9b7bf7]/20 focus:border-[#9b7bf7] transition-colors text-gray-800"
                       />
