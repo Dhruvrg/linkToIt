@@ -54,13 +54,14 @@ const LinkDetailsDialog: React.FC<LinkDetailsDialogProps> = ({ link }) => {
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
-    toast.success("Copied to clipboard!", {
-      icon: "📋",
+    toast.success(`${text} has been copied!`, {
+      duration: 3000,
       style: {
-        borderRadius: "10px",
-        background: "#333",
-        color: "#fff",
+        background: "#e6fcf5",
+        color: "#0ca678",
+        border: "1px solid #63e6be",
       },
+      icon: "📋",
     });
   };
 
