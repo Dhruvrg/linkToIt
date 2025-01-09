@@ -17,7 +17,13 @@ import {
   SidebarMenuButton,
   SidebarProvider,
 } from "@/components/ui/sidebar";
-import { PlusCircle, BarChart2, LinkIcon, Settings } from "lucide-react";
+import {
+  PlusCircle,
+  BarChart2,
+  LinkIcon,
+  Settings,
+  FileText,
+} from "lucide-react";
 
 export default function SideBar() {
   const pathname = usePathname();
@@ -74,6 +80,21 @@ export default function SideBar() {
                     >
                       <BarChart2 className="mr-3 h-4 w-4 text-[#9b7bf7]" />
                       <span className="text-sm">Analytics</span>
+                    </Link>
+                  </SidebarMenuSubButton>
+                </SidebarMenuSubItem>
+                <SidebarMenuSubItem>
+                  <SidebarMenuSubButton
+                    asChild
+                    isActive={pathname === `/dashboard/${projectId}/report`}
+                    className="w-full hover:bg-[#9b7bf7]/5 transition-colors duration-200"
+                  >
+                    <Link
+                      href={`/dashboard/${projectId}/report`}
+                      className="flex items-center px-8 py-2 rounded-md"
+                    >
+                      <FileText className="mr-3 h-4 w-4 text-[#9b7bf7]" />
+                      <span className="text-sm">Report</span>
                     </Link>
                   </SidebarMenuSubButton>
                 </SidebarMenuSubItem>

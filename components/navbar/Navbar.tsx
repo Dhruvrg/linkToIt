@@ -10,8 +10,8 @@ import {
   BarChart2,
   LinkIcon,
   Settings,
+  FileText,
   LogOut,
-  User,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -61,6 +61,11 @@ const Navbar: React.FC<Props> = ({ currentUser }) => {
       icon: BarChart2,
     },
     { name: "Links", href: `/dashboard/${projectId}/links`, icon: LinkIcon },
+    {
+      name: "Report",
+      href: `/dashboard/${projectId}/report`,
+      icon: FileText,
+    },
     {
       name: "Settings",
       href: `/dashboard/${projectId}/settings`,
