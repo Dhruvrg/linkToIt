@@ -1,12 +1,12 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Trophy } from 'lucide-react'
-import { motion } from 'framer-motion'
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Trophy } from "lucide-react";
+import { motion } from "framer-motion";
 
 interface BestPerformingLinkProps {
   link: {
-    url: string
-    totalClicks: number
-  }
+    url: string;
+    totalClicks: number;
+  };
 }
 
 export default function BestPerformingLink({ link }: BestPerformingLinkProps) {
@@ -19,20 +19,26 @@ export default function BestPerformingLink({ link }: BestPerformingLinkProps) {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <p className="text-lg font-semibold text-yellow-100 break-all">{link.url}</p>
+        <p className="text-lg font-semibold text-yellow-100 break-all">
+          linktoit.in/{link.url}
+        </p>
         <motion.div
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{
             type: "spring",
             stiffness: 260,
-            damping: 20
+            damping: 20,
           }}
         >
-          <p className="text-5xl font-bold mt-2">{link.totalClicks.toLocaleString()}</p>
+          <p className="text-white mt-2">
+            <span className="text-4xl font-bold mr-1">
+              {link.totalClicks.toLocaleString()}
+            </span>
+            <span className="opacity-90">clicks</span>
+          </p>
         </motion.div>
-        <p className="text-yellow-100 mt-2">Total clicks</p>
       </CardContent>
     </Card>
-  )
+  );
 }

@@ -20,7 +20,7 @@ export const stringToColor = (str: string) => {
     .padStart(2, "0")}${(hash & 0xff).toString(16).padStart(2, "0")}`;
 };
 
-export function socialMediaDataProcessor(links: Link[]) {
+export const socialMediaDataProcessor = (links: Link[]) => {
   const platformData: any = [];
   let otherClicks = 0;
 
@@ -61,7 +61,7 @@ export function socialMediaDataProcessor(links: Link[]) {
   }
 
   return platformData.sort((a: any, b: any) => b.clicks - a.clicks);
-}
+};
 
 export function utmDataProcessor(
   links: Link[],
@@ -98,3 +98,82 @@ export function utmDataProcessor(
 
   return data.sort((a: any, b: any) => b.clicks - a.clicks);
 }
+
+export const generateReportData = (links: Link[], clicksPerDay: number[]) => {
+  const totalLinks = links.length;
+
+  const bestLink = links.reduce(
+    (best, current) =>
+      current.totalClicks > best.totalClicks ? current : best,
+    { totalClicks: 0, shortUrl: "" } as (typeof links)[number]
+  );
+
+  const getTopMetric = (
+    key: "utmCampaign" | "utmMedium" | "utmTerm" | "utmContent" | "utmSource"
+  ) => {
+    const metrics = links.reduce<Record<string, number>>((acc, link) => {
+      const value = link[key];
+      if (value && value !== "Unknown") {
+        acc[value] = (acc[value] || 0) + link.totalClicks;
+      }
+      return acc;
+    }, {});
+
+    const [name, totalClicks] = Object.entries(metrics).reduce(
+      (top, current) => (current[1] > top[1] ? current : top),
+      ["", 0]
+    );
+
+    const formattedName =
+      name.length > 0 ? name[0].toUpperCase() + name.slice(1) : "None";
+
+    return { name: formattedName || "None", clicks: totalClicks };
+  };
+
+  const calculatePercentageChange = (previous: number, current: number) => {
+    if (previous === 0) return current > 0 ? 100 : 0;
+    return ((current - previous) / previous) * 100;
+  };
+
+  const periods = ["Yesterday", "Last Week", "Last Month"] as const;
+
+  const performanceChanges = () => {
+    const periodMapping = {
+      Yesterday: 1,
+      "Last Week": 7,
+      "Last Month": 30,
+    } as const;
+
+    const length = clicksPerDay.length;
+    if (length <= 1) return null;
+
+    return periods.map((period) => {
+      const daysBack = periodMapping[period];
+
+      if (daysBack >= length) return;
+
+      const currentClicks = clicksPerDay[length - 1];
+      const previousClicks = clicksPerDay[length - 1 - daysBack];
+
+      const change = calculatePercentageChange(previousClicks, currentClicks);
+
+      return { period, change: Number(change.toFixed(1)) };
+    });
+  };
+
+  const reportData = {
+    totalLinks,
+    bestLink: {
+      url: bestLink.shortUrl,
+      totalClicks: bestLink.totalClicks,
+    },
+    topPlatform: getTopMetric("utmSource"),
+    topCampaign: getTopMetric("utmCampaign"),
+    topMedium: getTopMetric("utmMedium"),
+    topTerm: getTopMetric("utmTerm"),
+    topContent: getTopMetric("utmContent"),
+    performanceChanges: performanceChanges(),
+  };
+
+  return reportData;
+};

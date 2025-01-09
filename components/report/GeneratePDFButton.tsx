@@ -11,9 +11,9 @@ interface GeneratePDFButtonProps {
   reportData: any;
 }
 
-export default function GeneratePDFButton({
+const GeneratePDFButton: React.FC<GeneratePDFButtonProps> = ({
   reportData,
-}: GeneratePDFButtonProps) {
+}) => {
   const [isGenerating, setIsGenerating] = useState(false);
 
   const generatePDF = () => {
@@ -118,4 +118,5 @@ export default function GeneratePDFButton({
       </Button>
     </motion.div>
   );
-}
+};
+export default GeneratePDFButton;
