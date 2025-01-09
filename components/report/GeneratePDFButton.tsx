@@ -20,7 +20,6 @@ const GeneratePDFButton: React.FC<GeneratePDFButtonProps> = ({
     setIsGenerating(true);
     const doc = new jsPDF();
 
-    // Add background color
     doc.setFillColor(245, 245, 255);
     doc.rect(
       0,
@@ -31,7 +30,7 @@ const GeneratePDFButton: React.FC<GeneratePDFButtonProps> = ({
     );
 
     // Add header
-    doc.setFillColor(155, 123, 247); // #9b7bf7
+    doc.setFillColor(155, 123, 247);
     doc.rect(0, 0, doc.internal.pageSize.width, 40, "F");
     doc.setTextColor(255, 255, 255);
     doc.setFontSize(24);
@@ -84,23 +83,26 @@ const GeneratePDFButton: React.FC<GeneratePDFButtonProps> = ({
     });
 
     // Add performance changes
-    doc.setFillColor(200, 255, 200);
-    doc.roundedRect(20, doc.lastAutoTable.finalY + 20, 170, 50, 3, 3, "F");
-    doc.setTextColor(0, 0, 0);
-    doc.setFontSize(16);
-    doc.setFont("helvetica", "bold");
-    doc.text("Performance Changes", 30, doc.lastAutoTable.finalY + 35);
-    doc.setFontSize(12);
-    doc.setFont("helvetica", "normal");
-    reportData.performanceChanges.forEach((change: any, index: number) => {
-      const color = change.change >= 0 ? "rgb(0, 128, 0)" : "rgb(255, 0, 0)";
-      doc.setTextColor(color);
-      doc.text(
-        `${change.period}: ${change.change}%`,
-        30,
-        doc.lastAutoTable.finalY + 45 + index * 10
-      );
-    });
+    if (reportData?.performanceChanges?.length) {
+      doc.setFillColor(200, 255, 200);
+      doc.roundedRect(20, doc.lastAutoTable.finalY + 20, 170, 50, 3, 3, "F");
+      doc.setTextColor(0, 0, 0);
+      doc.setFontSize(16);
+      doc.setFont("helvetica", "bold");
+      doc.text("Performance Changes", 30, doc.lastAutoTable.finalY + 35);
+      doc.setFontSize(12);
+      doc.setFont("helvetica", "normal");
+
+      reportData.performanceChanges.forEach((change: any, index: number) => {
+        const color = change.change >= 0 ? "rgb(0, 128, 0)" : "rgb(255, 0, 0)";
+        doc.setTextColor(color);
+        doc.text(
+          `${change.period}: ${change.change}%`,
+          30,
+          doc.lastAutoTable.finalY + 45 + index * 10
+        );
+      });
+    }
 
     doc.save("performance_report.pdf");
     setIsGenerating(false);

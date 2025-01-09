@@ -19,6 +19,7 @@ const page = async ({ params }: { params: IParams | any }) => {
   const mediumData = utmDataProcessor(links, "utmMedium");
   const termData = utmDataProcessor(links, "utmTerm");
   const contentData = utmDataProcessor(links, "utmContent");
+  const clicks = links.reduce((total, link) => total + link.totalClicks, 0);
 
   return (
     <>
@@ -28,12 +29,14 @@ const page = async ({ params }: { params: IParams | any }) => {
             {clicksPerDay !== undefined && <GraphSection list={clicksPerDay} />}
             <SocialMediaSection data={socialMediaData} />
           </div>
-          <div className="md:w-[80vw] md:mt-10 mt-4 md:pl-5 md:mx-auto md:flex justify-between  mx-4 space-y-4 md:space-y-0">
-            <UTMMediumSection data={mediumData} />
-            <UTMCampaignSection data={campaignData} />
-            <UTMTermSection data={termData} />
-            <UTMContentSection data={contentData} />
-          </div>
+          {clicks && (
+            <div className="md:w-[80vw] md:mt-10 mt-4 md:pl-5 md:mx-auto md:flex justify-between  mx-4 space-y-4 md:space-y-0">
+              <UTMMediumSection data={mediumData} />
+              <UTMCampaignSection data={campaignData} />
+              <UTMTermSection data={termData} />
+              <UTMContentSection data={contentData} />
+            </div>
+          )}
         </div>
       )}
       {links.length === 0 && <EmptyState />}
