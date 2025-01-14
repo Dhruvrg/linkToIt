@@ -14,12 +14,11 @@ import { Switch } from "@/components/ui/switch";
 import { Check, ChevronLeft, LinkIcon, Zap, Star } from "lucide-react";
 import { plans } from "@/constants";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
+import RazorpayButton from "@/components/RazorpayButton";
 
 const PricingPage = () => {
   const [isYearly, setIsYearly] = useState(false);
-  const router = useRouter();
   const targetRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -105,7 +104,7 @@ const PricingPage = () => {
                 </CardHeader>
                 <CardContent className="flex-grow">
                   <div className="mt-4 flex items-baseline text-6xl font-extrabold text-[#9b7bf7]">
-                    ${isYearly ? plan.yearlyPrice : plan.monthlyPrice}
+                    ₹{isYearly ? plan.yearlyPrice : plan.monthlyPrice}
                     <span className="ml-1 text-2xl font-medium text-muted-foreground">
                       /{isYearly ? "year" : "month"}
                     </span>
@@ -129,21 +128,11 @@ const PricingPage = () => {
                   </ul>
                 </CardContent>
                 <CardFooter>
-                  <Button
-                    onClick={() =>
-                      router.push(
-                        `${isYearly ? plan.yearlyHref : plan.montlyHref}`
-                      )
-                    }
-                    className={`w-full ${
-                      plan.popular
-                        ? "bg-[#9b7bf7] hover:bg-[#8a6ae6] text-white"
-                        : "bg-white text-[#9b7bf7] border-[#9b7bf7] hover:bg-[#9b7bf7] hover:text-white"
-                    } transition-colors duration-300`}
-                    variant={plan.popular ? "default" : "outline"}
-                  >
-                    Get started
-                  </Button>
+                  <RazorpayButton
+                    currency={"INR"}
+                    amount={isYearly ? plan.yearlyPrice : plan.monthlyPrice}
+                    popular={plan.popular}
+                  />
                 </CardFooter>
               </Card>
             </motion.div>

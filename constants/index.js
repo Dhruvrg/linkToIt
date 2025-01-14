@@ -95,8 +95,8 @@ export const plans = [
   {
     name: "Basic",
     description: "Best for individual content creators",
-    monthlyPrice: 4.99,
-    yearlyPrice: 47.99,
+    monthlyPrice: 399,
+    yearlyPrice: 3999,
     features: ["Analytics", "Link redirects", "1 Workspace", "10 links"],
     popular: false,
     yearlyHref: process.env.NEXT_PUBLIC_STRIPE_BASIC_YEARLY_PLAN_LINK,
@@ -105,8 +105,8 @@ export const plans = [
   {
     name: "Professional",
     description: "Best for startups and brands",
-    monthlyPrice: 9.99,
-    yearlyPrice: 95.99,
+    monthlyPrice: 799,
+    yearlyPrice: 7999,
     features: ["Analytics", "Link redirects", "3 Workspaces", "25 links"],
     popular: true,
     yearlyHref: process.env.NEXT_PUBLIC_STRIPE_PROFESSIONAL_YEARLY_PLAN_LINK,
@@ -115,8 +115,8 @@ export const plans = [
   {
     name: "Business",
     description: "Best for business and agencies",
-    monthlyPrice: 14.99,
-    yearlyPrice: 143.99,
+    monthlyPrice: 1199,
+    yearlyPrice: 11999,
     features: ["Analytics", "Link redirects", "5 Workspaces", "100 links"],
     popular: false,
     yearlyHref: process.env.NEXT_PUBLIC_STRIPE_BUSINESS_YEARLY_PLAN_LINK,
