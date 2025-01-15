@@ -3,7 +3,6 @@ import { Button } from "./ui/button";
 import Script from "next/script";
 import { useRouter } from "next/navigation";
 import { updateUserOnSubscription } from "@/lib/actions/user.actions";
-import { subscriptionService } from "@/lib/subscriptionService";
 
 interface RazorpayButtonProps {
   amount: number;
@@ -32,7 +31,7 @@ const RazorpayButton: React.FC<RazorpayButtonProps> = ({
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          amount: amount,
+          amount: amount * 100,
         }),
       });
 
@@ -51,8 +50,8 @@ const RazorpayButton: React.FC<RazorpayButtonProps> = ({
     try {
       const orderId: string = await createOrderId();
       const options = {
-        key: "rzp_test_JKtb9Hmc2f3zXh",
-        amount: amount,
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+        amount: amount * 100,
         currency: currency,
         name: "LINKTOIT",
         description: "Link Engagement Tool",
@@ -90,7 +89,8 @@ const RazorpayButton: React.FC<RazorpayButtonProps> = ({
           }
         },
         theme: {
-          color: "#3399cc",
+          color: "#9b7bf7",
+          background_color: "#f5f5f5",
         },
       };
 

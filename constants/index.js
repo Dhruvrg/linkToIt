@@ -99,8 +99,6 @@ export const plans = [
     yearlyPrice: 3999,
     features: ["Analytics", "Link redirects", "1 Workspace", "10 links"],
     popular: false,
-    yearlyHref: process.env.NEXT_PUBLIC_STRIPE_BASIC_YEARLY_PLAN_LINK,
-    montlyHref: process.env.NEXT_PUBLIC_STRIPE_BASIC_MONTHLY_PLAN_LINK,
   },
   {
     name: "Professional",
@@ -109,8 +107,6 @@ export const plans = [
     yearlyPrice: 7999,
     features: ["Analytics", "Link redirects", "3 Workspaces", "25 links"],
     popular: true,
-    yearlyHref: process.env.NEXT_PUBLIC_STRIPE_PROFESSIONAL_YEARLY_PLAN_LINK,
-    montlyHref: process.env.NEXT_PUBLIC_STRIPE_PROFESSIONAL_MONTHLY_PLAN_LINK,
   },
   {
     name: "Business",
@@ -119,8 +115,6 @@ export const plans = [
     yearlyPrice: 11999,
     features: ["Analytics", "Link redirects", "5 Workspaces", "100 links"],
     popular: false,
-    yearlyHref: process.env.NEXT_PUBLIC_STRIPE_BUSINESS_YEARLY_PLAN_LINK,
-    montlyHref: process.env.NEXT_PUBLIC_STRIPE_BUSINESS_MONTHLY_PLAN_LINK,
   },
 ];
 
